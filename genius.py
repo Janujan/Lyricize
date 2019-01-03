@@ -5,7 +5,7 @@ import json
 access_token ="H8gi1tgFffzZjO9PRxMNly8l04APCJHQNodtzCRGs_bIweR0x5JvhT7h6dq1-kED"
 
 api = genius.Genius(access_token)
-artist = api.search_artist("Drake", max_songs=3, sort='popularity', get_full_info=False)
+artist = api.search_artist("Drake", max_songs=3, sort='popularity', get_full_info=True)
 
 #get_full_info to false speeds up search considerably, you drop annotations
 # can sort on popularity or title
@@ -13,7 +13,7 @@ artist = api.search_artist("Drake", max_songs=3, sort='popularity', get_full_inf
 
 #save_lyrics saves a json file unfortunately, need to find a way to stop that
 #OR just delete after each run
-data = artist.save_lyrics(overwrite=False)
+data = artist.save_lyrics(overwrite=True)
 
 #json tags of d:
 # songs, title, album, year, lyrics

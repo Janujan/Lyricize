@@ -51,7 +51,7 @@ def results(request):
     access_token ="H8gi1tgFffzZjO9PRxMNly8l04APCJHQNodtzCRGs_bIweR0x5JvhT7h6dq1-kED"
 
     api = genius.Genius(access_token)
-    artist = api.search_artist(only_artist.artist_name, max_songs=1, sort='popularity', get_full_info=False)
+    artist = api.search_artist(only_artist.artist_name, max_songs=1, sort='popularity', get_full_info=True)
 
     #overwrite to avoid prompt, add filename and location to delete later
     data = artist.save_lyrics(overwrite=True)
