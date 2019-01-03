@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+
+{% block content %}
+<body>
+    <div class="container">
+        <h1 class="text-center">Please enter artist name</h1>
+      <div>
+      <div class="row">
+        <div class="col-md-12">
+        <!--Textarea with icon prefix-->
+          {{message}}
+        <form method="post">
+          {% csrf_token %}
+          {% for field in form.visible_fields %}
+            <p class="text-center">
+                    {{ field.errors }}
+                    {{ field }}
+                    {{ field.help_text }}
+              {% endfor %}
+              </p>
+          <div class="row">
+            <div class="col-md-12">
+
+            <input class="btn btn-primary"type="submit" value="OK"
+                style="position:relative; top:50%; left:50%; margin: -20px -20px; ">
+            </div>
+          </div>
+        </form>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+</body>
+</html>
+{% endblock content %}

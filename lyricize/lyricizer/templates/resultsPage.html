@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Results{% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+
+{% block content %}
+<body>
+    <div class="container">
+      {% if music %}
+      <div>
+          <h2 class=text-center>{{music.artist_name}}</h2>
+          <h2 class=text-center>{{music.year}}</h2>
+          <h2 class=text-center>{{music.album}}</h2>
+          <h2 class=text-center>{{music.title}}</h2>
+        </div>
+      {%endif%}
+    </div>
+
+</body>
+</html>
+{% endblock content %}
