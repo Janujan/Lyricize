@@ -28,7 +28,9 @@ def search(request):
                 form.save()
 
             print(name)
-            return redirect('results')
+            #return redirect('results')
+            return redirect('results' ,  artist_name = name )
+
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -37,19 +39,15 @@ def search(request):
     return render(request, 'searchPage.html', {'form': form})
 
 
-def results(request):
+def results(request, artist_name):
 
-    artists = Artist.objects.all()
-    print(artists)
-    only_artist = artists[0]
-
-    message = only_artist.artist_name
+    only_artist = artist_name
     print(only_artist)
 
     access_token ="H8gi1tgFffzZjO9PRxMNly8l04APCJHQNodtzCRGs_bIweR0x5JvhT7h6dq1-kED"
 
     api = genius.Genius(access_token)
-    artist = api.search_artist(only_artist.artist_name, max_songs=1, sort='popularity', get_full_info=True)
+    artist = api.search_artist(only_artist, max_songs=1, sort='popularity', get_full_info=True)
 
     #overwrite to avoid prompt, add filename and location to delete later
     data = artist.save_lyrics(overwrite=True)
@@ -69,10 +67,9 @@ def results(request):
     lyrics = data['songs'][0]['lyrics']
     #print(lyrics)
 
-    artist_name = data['artist']
     print(artist_name)
 
-    music = Music(only_artist.artist_name)
+    music = Music(only_artist)
     music.year = year
     music.album = album
     music.title = title
@@ -85,6 +82,5 @@ def results(request):
         "music" : music,
         "line_count": l_count
     }
-
 
     return render(request, 'resultsPage.html', context)
