@@ -1,15 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from django import forms
+from .forms import SearchForm
 from .models import Artist
 import lyricsgenius as genius
-# Create your views here.
-class SearchForm(forms.ModelForm):
-    artist_name = forms.CharField(label='artist_name', max_length=100)
-
-    class Meta:
-        model = Artist
-        fields = ['artist_name']
+from cleaning import tempCleaner, lineCount
 
 class Music:
     def __init__(self,name):
@@ -27,9 +21,13 @@ def search(request):
         if form.is_valid():
 
             name = form.cleaned_data['artist_name']
-            form.save()
-            print(name)
+            name.upper()
+            #check if name already exists
+            artists = Artist.objects.filter(artist_name = name)
+            if not artists:
+                form.save()
 
+            print(name)
             return redirect('results')
 
     # if a GET (or any other method) we'll create a blank form
@@ -78,11 +76,15 @@ def results(request):
     music.year = year
     music.album = album
     music.title = title
+
+    #line count:
+    lyrics = tempCleaner(data)
+    l_count = lineCount(lyrics)
+
     context = {
-        "music" : music
+        "music" : music,
+        "line_count": l_count
     }
 
-    #delete artists every time for now
-    artists.delete()
 
     return render(request, 'resultsPage.html', context)
