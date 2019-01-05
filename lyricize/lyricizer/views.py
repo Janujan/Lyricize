@@ -3,7 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .forms import SearchForm
 from .models import Artist
 import lyricsgenius as genius
-from cleaning import tempCleaner, lineCount
+#from cleaning import tempCleaner, lineCount
+from summary import tokenizeLyrics, wordCount
+import nltk
 
 class Music:
     def __init__(self,name):
@@ -74,13 +76,13 @@ def results(request, artist_name):
     music.album = album
     music.title = title
 
-    #line count:
-    lyrics = tempCleaner(data)
-    l_count = lineCount(lyrics)
+    #word count:
+    tokens = tokenizeLyrics(lyrics)
+    word_count = wordCount(tokens)
 
     context = {
         "music" : music,
-        "line_count": l_count
+        "word_count": word_count
     }
 
     return render(request, 'resultsPage.html', context)
