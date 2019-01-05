@@ -4,7 +4,7 @@ from .forms import SearchForm
 from .models import Artist
 import lyricsgenius as genius
 #from cleaning import tempCleaner, lineCount
-from summary import tokenizeLyrics, wordCount
+from summary import *
 import nltk
 
 class Music:
@@ -79,10 +79,14 @@ def results(request, artist_name):
     #word count:
     tokens = tokenizeLyrics(lyrics)
     word_count = wordCount(tokens)
+    lex_rich = lexicalRichness(tokens)
+    uniq_count = uniqueWordCount(tokens)
 
     context = {
         "music" : music,
-        "word_count": word_count
+        "word_count": word_count,
+        "lexical_richness":lex_rich[:4] + '%',
+        "unique_count": uniq_count,
     }
 
     return render(request, 'resultsPage.html', context)
