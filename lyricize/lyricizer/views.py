@@ -51,6 +51,12 @@ def results(request, artist_name):
     api = genius.Genius(access_token)
     artist = api.search_artist(only_artist, max_songs=1, sort='popularity', get_full_info=True)
 
+    #if artist doesnt exist, remove from database and go back to search page
+    if artist is None:
+        return_artist = Artist.objects.get(artist_name=only_artist)
+        return_artist.delete()
+        return redirect('search')
+
     #overwrite to avoid prompt, add filename and location to delete later
     data = artist.save_lyrics(overwrite=True)
 
