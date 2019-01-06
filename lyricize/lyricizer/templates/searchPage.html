@@ -4,13 +4,13 @@
 
 {% block content %}
 <body id="search">
-    <div class="container">
-        <h1 class="text-center">Please enter artist name</h1>
-      <div>
+    <div class="container" style="padding-top:17%;">
+      <h1 class="text-center">Please enter artist name</h1>
+
+      </div>
       <div class="row">
         <div class="col-md-12">
         <!--Textarea with icon prefix-->
-          {{message}}
         <form method="post">
           {% csrf_token %}
           {% for field in form.visible_fields %}
@@ -31,7 +31,6 @@
         </div>
       </div>
 
-    </div>
     </div>
 
 </body>
