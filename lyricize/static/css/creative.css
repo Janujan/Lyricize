@@ -15,9 +15,9 @@ body {
 }
 
 hr {
-  max-width: 50px;
-  border-width: 3px;
-  border-color: #007BB8;
+  max-width: 200px;
+  border-width: 1px;
+  border-color: aqua;
 }
 
 hr.light {
@@ -201,4 +201,10 @@ img::-moz-selection {
   header.masthead h1 {
     font-size: 3rem;
   }
+}
+
+#paint {
+  background-color:#663399;
+  color:aqua;
+
 }

@@ -3,15 +3,18 @@
 {% block nav-style %}mkt-nav{% endblock nav-style %}
 
 {% block content %}
-<body>
+<body id="paint">
     <div class="container">
       {% if music %}
       <div class="row">
           <div class="col-lg-12">
             <h2 class=text-center>{{music.artist_name}}</h2>
+            <hr>
             <h4 class=text-center>{{music.year}}</h2>
             <h4 class=text-center>{{music.album}}</h2>
             <h4 class=text-center>{{music.title}}</h2>
+              <hr>
+
         </div>
       </div>
       <div class="row">
@@ -21,7 +24,7 @@
 
           <h2 class=text-center>Total Unique Words</h2>
           <h2 class=text-center>{{unique_count}}</h2>
-          
+
           <h2 class=text-center>Lexical Richness</h2>
           <h2 class=text-center>{{lexical_richness}}</h2>
 
@@ -29,7 +32,6 @@
       </div>
       {%endif%}
     </div>
-
 </body>
 </html>
 {% endblock content %}
