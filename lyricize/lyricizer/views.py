@@ -86,10 +86,9 @@ def results(request, artist_name):
     music.title = title
 
     #word count:
-    tokens = tokenizeLyrics(lyrics)
-    word_count = wordCount(tokens)
-    lex_rich = lexicalRichness(tokens)
-    uniq_count = uniqueWordCount(tokens)
+    word_count = wordCount(lyrics)
+    lex_rich = lexicalRichness(lyrics)
+    uniq_count = uniqueWordCount(lyrics)
 
     context = {
         "music" : music,
