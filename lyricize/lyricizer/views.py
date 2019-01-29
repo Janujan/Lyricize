@@ -60,6 +60,9 @@ def results(request, artist_name):
     #overwrite to avoid prompt, add filename and location to delete later
     data = artist.save_lyrics(overwrite=True)
 
+    image_url = data['songs'][0]['image']
+    print(data['songs'][0]['image'])
+
     #json tags of d:
     # songs, title, album, year, lyrics
     # after that its just a bunch of annotations
@@ -93,6 +96,7 @@ def results(request, artist_name):
         "word_count": word_count,
         "lexical_richness":lex_rich[:4] + '%',
         "unique_count": uniq_count,
+        "image_url": image_url,
     }
 
     return render(request, 'resultsPage.html', context)
