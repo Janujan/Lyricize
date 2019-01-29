@@ -17,11 +17,7 @@ body {
 hr {
   max-width: 200px;
   border-width: 1px;
-<<<<<<< HEAD
   border-color: white;
-=======
-  border-color: aqua;
->>>>>>> 7dbaec52ea3c73acad2c80b10d782ea32f10043f
 }
 
 hr.light {
@@ -262,4 +258,10 @@ img::-moz-selection {
 	100% {
 		background-position: 0% 50%
 	}
+}
+
+#image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
