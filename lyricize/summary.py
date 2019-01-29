@@ -16,9 +16,10 @@ def tokenizeLyrics(lyrics, include_stopwords=False):
 
     if (include_stopwords == True):
         # Removing filtered stopwords
-        words_to_keep = ['only', 'myself','yourselves','most','again','while','down',
-                        'which','ourselves','between','after','being','both','won',
-                        'who', 'what','where','why']
+        words_to_keep = ['only', 'myself','yourself','yourselves','most','again','while','down',
+                        'himself', 'herself', 'which','ourselves','between','after','being','both',
+                        'won', 'who', 'what','where','why','themselves','against','now','same',
+                        'very','once','further','over','under','up','above','below','before']
         words_to_add = ["i'm","i'd","i'll","that's","he's","she's","they're","you're","we're"]
         stop_words = set(stopwords.words('english')).difference(words_to_keep)
         stop_words.update(words_to_add)
