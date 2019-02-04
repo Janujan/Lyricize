@@ -43,11 +43,13 @@ class Song_Lyrics:
 
     # Percentage of one word over the track
     def percentageOfTrack(self, word):
-        return (str(self.all_tokens.count(word) / len(self.all_tokens) * 100) + '%')
+        return (self.all_tokens.count(word) / len(self.all_tokens) * 100)
 
     # Top 10 words and their count
     def top10words(self):
-        fdist = nltk.FreqDist(self.filtered_tokens)
-        print(fdist)
-        return(fdist.most_common(10))
+        fdist = nltk.FreqDist(self.filtered_tokens).most_common(10)
+        most_common_dict = {}
+        for words in range(len(fdist)):
+            most_common_dict[fdist[words][0]] = fdist[words][1]
+        return (most_common_dict)
         
