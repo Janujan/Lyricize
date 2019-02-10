@@ -1,6 +1,6 @@
 import pandas as pd
 import nltk
-from nltk.corpus import stopwords
+import stopwords
 import re
 
 class Song_Lyrics:
@@ -16,22 +16,27 @@ class Song_Lyrics:
         final_token = nltk.WhitespaceTokenizer().tokenize(edited)
 
         if (include_stopwords == True):
+            custom_stopwords = nltk.data.load('stopwords/english', format="raw")
+            print(custom_stopwords)
             # Removing filtered stopwords
             words_to_keep = ['only', 'myself','yourself','yourselves','most','again','while','down',
                             'himself', 'herself', 'which','ourselves','between','after','being','both',
                             'won', 'who', 'what','where','why','themselves','against','now','same',
                             'very','once','further','over','under','up','above','below','before']
             words_to_add = ["i'm","i'd","i'll","that's","he's","she's","they're","you're","we're"]
-            stop_words = set(stopwords.words('english')).difference(words_to_keep)
+            stop_words = set(custom_stopwords).difference(words_to_keep)
             stop_words.update(words_to_add)
             final_token = [word for word in final_token if word not in stop_words]
 
         text = nltk.Text(final_token)
         return (text)
 
-    # Total word count (including 'Verse', 'Chorus')
+    # Total word count
     def wordCount(self):
         return (len(self.all_tokens))
+
+    def filteredWordCount(self):
+        return (len(self.filtered_tokens))
 
     # Number of distinct words in track
     def uniqueWordCount(self):
@@ -52,4 +57,3 @@ class Song_Lyrics:
         for words in range(len(fdist)):
             most_common_dict[fdist[words][0]] = fdist[words][1]
         return (most_common_dict)
-        
