@@ -17,7 +17,6 @@ class Song_Lyrics:
 
         if (include_stopwords == True):
             custom_stopwords = nltk.data.load('stopwords/english', format="raw")
-            print(custom_stopwords)
             # Removing filtered stopwords
             words_to_keep = ['only', 'myself','yourself','yourselves','most','again','while','down',
                             'himself', 'herself', 'which','ourselves','between','after','being','both',
