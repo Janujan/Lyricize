@@ -85,17 +85,14 @@ def results(request, artist_name):
     music.album = album
     music.title = title
 
-    #word count:
-    tokens = tokenizeLyrics(lyrics)
-    word_count = wordCount(tokens)
-    lex_rich = lexicalRichness(tokens)
-    uniq_count = uniqueWordCount(tokens)
+    #song object
+    track_lyrics = Song_Lyrics(lyrics)
 
     context = {
         "music" : music,
-        "word_count": word_count,
-        "lexical_richness":lex_rich[:4] + '%',
-        "unique_count": uniq_count,
+        "word_count": track_lyrics.wordCount(),
+        "lexical_richness": str(track_lyrics.lexicalRichness())[:4] + '%',
+        "unique_count": track_lyrics.uniqueWordCount(),
         "image_url": image_url,
     }
 
