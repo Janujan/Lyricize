@@ -2,6 +2,9 @@ import pandas as pd
 import nltk
 import re
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from django.http import HttpResponse
+import io
 from wordcloud import WordCloud
 
 class Song_Lyrics:
@@ -67,4 +70,10 @@ class Song_Lyrics:
         plt.imshow(wordcloud, interpolation = 'bilinear')
         plt.axis('off')
         plt.tight_layout(pad=0)
-        plt.show()
+
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        plt.close(fig)
+        response = HttpResponse(buf.getvalue(), content_type='image/png')
+        return (response)
+        
