@@ -1,23 +1,24 @@
 import pandas as pd
 import nltk
-import stopwords
 import re
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
 class Song_Lyrics:
     def __init__(self, lyrics):
-        self.all_tokens = self.tokenizeLyrics(lyrics)
+        # Converting to lowercase and removing square brackets metadata
+        edited = lyrics.replace(',','').lower()
+        square_brackets_re = r'\[.*?\]'    
+        self.lyrics = re.sub(square_brackets_re, '', edited)
+        self.all_tokens = self.tokenizeLyrics(self.lyrics)
         self.filtered_tokens = self.tokenizeLyrics(lyrics, True)
     
     def tokenizeLyrics(self, lyrics, include_stopwords=False):
-        # Converting to lowercase and removing square brackets metadata
-        edited = lyrics.replace(',','').lower()
-        square_brackets_re = r'\[.*?\]'
-        edited = re.sub(square_brackets_re, '', edited)
-        final_token = nltk.WhitespaceTokenizer().tokenize(edited)
+        final_token = nltk.WhitespaceTokenizer().tokenize(lyrics)
 
         if (include_stopwords == True):
-            custom_stopwords = nltk.data.load('stopwords/english', format="raw")
             # Removing filtered stopwords
+            custom_stopwords = nltk.data.load('stopwords/english', format="raw")
             words_to_keep = ['only', 'myself','yourself','yourselves','most','again','while','down',
                             'himself', 'herself', 'which','ourselves','between','after','being','both',
                             'won', 'who', 'what','where','why','themselves','against','now','same',
@@ -56,3 +57,14 @@ class Song_Lyrics:
         for words in range(len(fdist)):
             most_common_dict[fdist[words][0]] = fdist[words][1]
         return (most_common_dict)
+    
+    # Wordcloud generation
+    def wordcloud(self):
+        wordcloud = WordCloud(background_color = 'black',
+        # stopwords = nltk.data.load('stopwords/english', format="raw")
+        ).generate(str(self.lyrics))
+        fig = plt.figure(facecolor = 'k', edgecolor = 'k')
+        plt.imshow(wordcloud, interpolation = 'bilinear')
+        plt.axis('off')
+        plt.tight_layout(pad=0)
+        plt.show()
