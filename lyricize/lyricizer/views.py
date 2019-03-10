@@ -94,6 +94,7 @@ def results(request, artist_name):
         "lexical_richness": str(track_lyrics.lexicalRichness())[:4] + '%',
         "unique_count": track_lyrics.uniqueWordCount(),
         "image_url": image_url,
+        "wordcloud": track_lyrics.wordcloud()
     }
 
     return render(request, 'resultsPage.html', context)
