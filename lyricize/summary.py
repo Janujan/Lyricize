@@ -2,11 +2,15 @@ import pandas as pd
 import nltk
 import stopwords
 import re
+from spotipy.oauth2 import SpotifyClientCredentials
+import spotipy
 
 class Song_Lyrics:
-    def __init__(self, lyrics):
+    def __init__(self, lyrics, title, artist_name):
         self.all_tokens = self.tokenizeLyrics(lyrics)
         self.filtered_tokens = self.tokenizeLyrics(lyrics, True)
+        self.title = title
+        self.artist_name = artist_name
     
     def tokenizeLyrics(self, lyrics, include_stopwords=False):
         # Converting to lowercase and removing square brackets metadata
@@ -56,3 +60,49 @@ class Song_Lyrics:
         for words in range(len(fdist)):
             most_common_dict[fdist[words][0]] = fdist[words][1]
         return (most_common_dict)
+
+    def audioFeatures(self):
+        # Setting up Spotify credentials
+        client_credentials_manager = SpotifyClientCredentials()
+        sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+        sp.trace=False
+
+        #search for a song named 'track_name' in Spotify
+        results = sp.search(q=self.title + ' ' + self.artist_name, limit=1)
+        audio_features = {}
+
+        #if no song was found in Spotify, output the song name that was read in and empty fields
+        if not results['tracks']['items']:
+            audio_features = {
+                                'popularity': 0,
+                                'energy': 0,
+                                'dance': 0,
+                                'liveness': 0,
+                                'valence': 0,
+                                'tempo': 0,
+                                'instrumental': 0,
+                                'acoustic': 0,
+                                'artistName': 0
+            }
+        #if song was found on Spotify
+        else:
+            #Find the track's ID to get audio features
+            track_id = results['tracks']['items'][0]['uri']
+            
+            #Get audio features using the track's ID stored in TIDS
+            features = sp.audio_features(track_id)
+            
+            if features[0] is not None:
+                #define each variable needed from the "get audio features" "search for a track" query for the project
+                audio_features = {
+                                    'popularity': results['tracks']['items'][0]['popularity'],
+                                    'energy': features[0]['energy'],
+                                    'dance': features[0]['danceability'],
+                                    'liveness': features[0]['liveness'],
+                                    'valence': features[0]['valence'],
+                                    'tempo': features[0]['tempo'],
+                                    'instrumental': features[0]['instrumentalness'],
+                                    'acoustic': features[0]['acousticness']
+                }  
+        # print(results['tracks']['items'][0]['name']+ ' ' + results['tracks']['items'][0]['artists'][0]['name'])
+        return(audio_features)
