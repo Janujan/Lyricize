@@ -1,7 +1,6 @@
 import pandas as pd
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk_data import stopwords
 import re
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
