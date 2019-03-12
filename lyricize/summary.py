@@ -5,7 +5,7 @@ import re
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 
-class Song_Lyrics:
+class Song:
     def __init__(self, lyrics, title, artist_name):
         self.all_tokens = self.tokenizeLyrics(lyrics)
         self.filtered_tokens = self.tokenizeLyrics(lyrics, True)
@@ -67,7 +67,7 @@ class Song_Lyrics:
         sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
         sp.trace=False
 
-        #search for a song named 'track_name' in Spotify
+        #search for a song named 'title + artist' from Genius, in Spotify
         results = sp.search(q=self.title + ' ' + self.artist_name, limit=1)
         audio_features = {}
 
@@ -89,7 +89,7 @@ class Song_Lyrics:
             #Find the track's ID to get audio features
             track_id = results['tracks']['items'][0]['uri']
             
-            #Get audio features using the track's ID stored in TIDS
+            #Get audio features using the track's ID stored in track_id
             features = sp.audio_features(track_id)
             
             if features[0] is not None:

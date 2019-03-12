@@ -86,7 +86,7 @@ def results(request, artist_name):
     music.title = title
 
     #song object
-    track_lyrics = Song_Lyrics(lyrics, title, artist_name)
+    track_lyrics = Song(lyrics, title, artist_name)
 
     context = {
         "music" : music,
