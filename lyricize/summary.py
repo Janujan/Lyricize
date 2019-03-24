@@ -1,23 +1,26 @@
 import pandas as pd
 import nltk
-import stopwords
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import re
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 
+# Modify NLTK Path to Director
+nltk.data.path.append('nltk_data')
+
 class Song:
     def __init__(self, lyrics, title, artist_name):
+        # Converting to lowercase and removing square brackets metadata
+        edited = lyrics.replace(',','').lower()
+        square_brackets_re = r'\[.*?\]'
+        self.lyrics = re.sub(square_brackets_re, '', edited)
         self.all_tokens = self.tokenizeLyrics(lyrics)
         self.filtered_tokens = self.tokenizeLyrics(lyrics, True)
         self.title = title
         self.artist_name = artist_name
     
     def tokenizeLyrics(self, lyrics, include_stopwords=False):
-        # Converting to lowercase and removing square brackets metadata
-        edited = lyrics.replace(',','').lower()
-        square_brackets_re = r'\[.*?\]'
-        edited = re.sub(square_brackets_re, '', edited)
-        final_token = nltk.WhitespaceTokenizer().tokenize(edited)
+        final_token = nltk.WhitespaceTokenizer().tokenize(self.lyrics)
 
         if (include_stopwords == True):
             custom_stopwords = nltk.data.load('stopwords/english', format="raw")
@@ -106,3 +109,29 @@ class Song:
                 }  
         # print(results['tracks']['items'][0]['name']+ ' ' + results['tracks']['items'][0]['artists'][0]['name'])
         return(audio_features)
+        
+    def sentiment_analysis(self):
+        sentences = self.lyrics.splitlines()
+        num_positive = 0
+        num_negative = 0
+        num_neutral = 0
+        
+        for sentence in sentences:
+            sid = SentimentIntensityAnalyzer()
+            comp = sid.polarity_scores(sentence)
+            comp = comp['compound']
+            if comp >= 0.5:
+                num_positive += 1
+            elif comp > -0.5 and comp < 0.5:
+                num_neutral += 1
+            else:
+                num_negative += 1
+        
+        num_total = num_negative + num_neutral + num_positive
+        percent_negative = (num_negative/float(num_total))*100
+        percent_neutral = (num_neutral/float(num_total))*100
+        percent_positive = (num_positive/float(num_total))*100
+
+        return ({'positive': percent_positive, 
+                 'neutral': percent_neutral,
+                 'negative': percent_negative})
