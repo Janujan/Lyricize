@@ -1,6 +1,5 @@
 import pandas as pd
 import nltk
-import stopwords
 import re
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
@@ -106,3 +105,18 @@ class Song:
                 }  
         # print(results['tracks']['items'][0]['name']+ ' ' + results['tracks']['items'][0]['artists'][0]['name'])
         return(audio_features)
+
+    def count_of_profanity(self):
+        f = open('stopwords/profane.txt', 'rU')
+        list_of_profanity = f.read()
+        profane_words = list_of_profanity.split()
+        profanity = nltk.Text(profane_words)
+        song_profanity = {}
+
+        for word in self.all_tokens:
+            if word in profanity:
+                if word in song_profanity:
+                    song_profanity[word] += 1
+                else:
+                    song_profanity[word] = 1
+        return(song_profanity)
